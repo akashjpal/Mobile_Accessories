@@ -1,0 +1,121 @@
+.flex-box{
+    display: flex;
+    width: 1100px;
+    margin-left: 50px;
+}
+
+.left{
+    width: 1800px;
+}
+
+.big-img{
+    width: 550px;
+}
+
+.big-img img{
+    width: inherit;
+    border-radius: 30px;
+}
+
+.images{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    margin-top: 25px;
+}
+
+.small-img{
+    width: 150px;
+    margin-right: 10px;
+    overflow: hidden;
+    border: 1.1px solid black;
+}
+
+.small-img first-small-image{
+    margin-left: 500px;
+}
+
+.small-img img{
+    width: 88px;   
+    align-items: center; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.small-img:hover img{
+    transform: scale(1.2);
+}
+
+.url{
+    font-size: 13px;
+    font-weight: 400;
+    color: rgb(154 156 163);
+}
+
+.pname{
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.mrp{
+    font-size: 12px;
+    color: rgb(154, 156, 163);
+}
+
+.price{
+    font-size: 30px;
+    font-weight: 500;
+    margin: 20px 0;
+}
+
+.quantity{
+    display: flex;
+    /* align-items: center; */
+}
+
+.quantity p{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.quantity input{
+    width: 55px;
+    height: 25px;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+    margin-left: 15px;
+}
+
+.btn-box{
+    display: flex;
+    margin-top: 40px;
+}
+
+.btn-box button{
+    font-size: 18px;
+    padding: 8px 25px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 24px;
+    color: white;
+}
+
+.cart-btn{
+    background-color: #ff5e00;
+    margin-right: 20px;
+}
+
+.buy-btn{
+    background-color: #007bff;
+
+}
+
+.bgImage{
+    filter: blur(10px);  
+    background-size:cover;
+    background-repeat: no-repeat;
+}
