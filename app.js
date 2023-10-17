@@ -2,13 +2,22 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import {v4 as uuidv4} from 'uuid';
-import {fun} from "./helper/getDevice.js";
 import { fileURLToPath } from 'url';
 import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Imported Modules
 import products from "./helper/productunder99.js";
 import headphones from "./helper/headphones.js";
+import bluespeak from "./helper/bulespeak.js";
+import powerbank from "./helper/powerbank.js";
+import wiredwheadpwhone from "./helper/wiredheaphone.js";
+import usb from "./helper/usb.js";
+import pouch from "./helper/pouch.js";
+import charger from "./helper/charger.js";
+import smartwatch from "./helper/smartwatch.js";
+import transport from "./helper/transport.js";
 
 const app  = express();
 app.set('view engine', 'ejs');
@@ -16,7 +25,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // console.log(products);
-console.log(headphones);
+// console.log(headphones);
+// console.log(bluespeak);
+// console.log(powerbank);
+// console.log(wiredwheadpwhone);
+// console.log(usb);
+// console.log(pouch);
+// console.log(charger);
 
 mongoose.connect("mongodb+srv://akash:akash@cluster0.trdd6ez.mongodb.net/mobileDB");
 // mongodb+srv://akash:akash@cluster0.trdd6ez.mongodb.net/trickDB
@@ -38,6 +53,23 @@ const bookingSchema = new mongoose.Schema({
   img_url:String
 });
 
+const mail = async (productname,productid,price,uid) => {
+    const user = await Registers.findOne({uid:uid}).exec();
+    const info = await transport.sendMail({
+        from: 'team-ava@gmail.com', // sender address
+        to: user.email, // list of receivers
+        subject: "Product Booked", // Subject line
+        text: "You have successfully booked your product", // plain text body
+        html: '<b>ProductID is : '+productid+'</br> Product name is : '+productname+'</br>  Product Price is :'+price+'</b>', // html body
+      });
+
+  async function main() {
+    // send mail with defined transport object
+    const response  = await info();
+    console.log("Message sent: %s", info.messageId);
+}
+}
+
 const Registers = mongoose.model("Register",registerSchema);
 const Booking = mongoose.model("Booking",bookingSchema);
 
@@ -47,15 +79,6 @@ app.get("/", function(req, res) {
 });
   
 
-// fun();
-// fetch karega devices ko
-// var data1;
-// data1 = fun('headphones').then((data)=>{
-//     data1 = data;
-//     console.log(data1);
-// });
-// console.log(data1);
-
 var newID ;
 
 // SignIn
@@ -63,7 +86,7 @@ app.get("/signIn",function(req,res){
     res.sendFile(__dirname+"/signIn.html");
 });
 
-app.post("/signIn", function(req, res){
+app.post("/signIn", async function(req, res){
   newID = uuidv4();
   const user = new Registers({
     name: req.body.username,
@@ -71,7 +94,7 @@ app.post("/signIn", function(req, res){
     password: req.body.password,
     uid:String(newID)
   });
-  user.save();
+  await user.save();
   res.redirect("/");
 });
 
@@ -80,101 +103,256 @@ app.get("/login",function(req,res){
     res.sendFile(__dirname+"/login.html");
 })
 
-app.post("/login",function(req,res){
-    const user = Registers.findOne({email:req.body.email});
-    newID = user.uid;
-    console.log(user.name);
-    console.log(newID);
-    if(user){
-        res.redirect("/");
-    }else{
-        res.send("Invalid Credentials");
+app.post("/login", async function(req, res) {
+    try {
+        const user = await Registers.findOne({ email: req.body.email }).exec();
+
+        if (user) {
+            console.log(user.name);
+            console.log(user.uid);
+            newID = user.uid;
+            res.redirect("/");
+        } else {
+            res.sendFile(__dirname+"/error.html");
+        }
+    } catch (error) {
+        console.error("Database query error:", error);
+        res.status(500).send("An error occurred while searching for the user.");
     }
-})
+});
 
 // handles my_orders
-app.get("/my_orders",function(req,res){
+app.get("/my_orders",async function(req,res){
   // here the main dynamic page come
-})
+  if(newID == undefined){res.redirect("/login");}
+  else{
+    try{
+        const products = await Booking.find({uid:newID});
+        console.log(products);
+        res.render("Orders",{orders:products});
+    }catch(error){
+      console.log(error);
+    }
+  }
+});
 
 
 // Contact Us
 app.get("/contact",function(req,res){
     if(newID===undefined){res.redirect("/login");}
+    else{
     res.sendFile(__dirname+"/contact_us.html");
+    }
 })
 
 // USB.html
 app.get("/USB",function(req,res){
     if(newID===undefined){res.redirect("/login");}
-    res.sendFile(__dirname+"/USB.html");
+    else{
+        res.render('USB', {usbs:usb});
+    }
 })
 
-// Headphones.html
-app.get("/Headphones",function(req,res){
-    if(newID===undefined){res.redirect("/login");}
-    res.render('Headphones', {headphones:headphones});
-    // res.sendFile(__dirname+"/Headphones.html");
-})
-
-app.post("/Headphones",function(req,res){
+app.post("/USB",async function(req,res){
     try{
         const p_id = req.body.product_id;
         var img = "";
         var product_price = "";
-        for(var i=0;i<headphones.length;i++){
-            if(headphones[i].id===p_id){
-                img = headphones[i].img;
-                product_price = headphones[i].real_price;
+        var product_name = "";
+        for(var i=0;i<usb.length;i++){
+            if(usb[i].id===p_id){
+                img = usb[i].img;
+                product_price = usb[i].real_price;
+                product_name = usb[i].product_name;
             }
         }
-        console.log(newID);
-        console.log(p_id);
-        console.log(img);
-        console.log(product_price);
 
         const product = new Booking({
             uid:String(newID),
             pid:p_id,
-            productName:req.body.product_name,
+            productName:product_name,
             price:product_price,
             img_url:img
         });
 
-        product.save();
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/USB");
+    }catch(error){
+        console.log(error);
+    }
+});
+
+// Headphones.html
+app.get("/Headphones",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
+    else{
+    res.render('Headphones', {headphones:headphones});
+    }
+})
+
+app.post("/Headphones",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<headphones.length;i++){
+            if(headphones[i].id===p_id){
+                img = headphones[i].img;
+                product_price = headphones[i].real_price;
+                product_name = headphones[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
         res.redirect("/Headphones");
     }catch(err){
         console.log(err);
     }
 });
+
 // WiredHeadphones.html
 app.get("/WiredHeadphones",function(req,res){
     if(newID===undefined){res.redirect("/login");}
-    res.sendFile(__dirname+"/WiredHeadphones.html");
-})
+    else{
+    res.render('WiredHeadphones', {wiredwheadpwhones:wiredwheadpwhone});
+    }
+});
 
-// PowerBankList.html
-app.get("/PowerBankList",function(req,res){
-    if(newID===undefined){res.redirect("/login");}
-    res.sendFile(__dirname+"/PowerBankList.html");
-})
-
-// ProductUnder999List.html
-app.get("/ProductUnder999List",function(req,res){
-    if(newID===undefined){res.redirect("/login");}
-    res.render('ProductUnder999List', {products:products});
-    // res.sendFile(__dirname+"/ProductUnder999List.html");
-})
-
-app.post("/ProductUnder999List",function(req,res){
+app.post("/WiredHeadphones",async function(req,res){
     try{
         const p_id = req.body.product_id;
         var img = "";
         var product_price = "";
+        var product_name = "";
+        for(var i=0;i<wiredwheadpwhone.length;i++){
+            if(wiredwheadpwhone[i].id===p_id){
+                img = wiredwheadpwhone[i].img;
+                product_price = wiredwheadpwhone[i].real_price;
+                product_name = wiredwheadpwhone[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/WiredHeadphones");
+    }catch(error){
+        console.log(error);
+    }
+});
+
+// BluetoothSpeaker
+app.get("/BluetoothSpeaker",function(req,res){
+    if(newID===undefined){res.redirect("/login");}else{
+    res.render('BluetoothSpeaker', {bluespeaks:bluespeak});
+    }
+});
+
+app.post("/BluetoothSpeaker",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<bluespeak.length;i++){
+            if(bluespeak[i].id===p_id){
+                img = bluespeak[i].img;
+                product_price = bluespeak[i].real_price;
+                product_name = bluespeak[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/BluetoothSpeaker");
+    }catch(err){
+        console.log(err);
+    }
+});
+
+// PowerBankList.html
+app.get("/PowerBankList",function(req,res){
+    if(newID===undefined){res.redirect("/login");}else{
+    res.render('PowerBankList', {powerbanks:powerbank});
+    // res.sendFile(__dirname+"/PowerBankList.html");/
+    }
+})
+
+app.post("/PowerBankList",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<powerbank.length;i++){
+            if(powerbank[i].id===p_id){
+                img = powerbank[i].img;
+                product_price = powerbank[i].real_price;
+                product_name = powerbank[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/PowerBankList");
+    }catch(err){
+        console.log(err);
+    }
+});
+
+// ProductUnder999List.html
+app.get("/ProductUnder999List",function(req,res){
+    if(newID===undefined){res.redirect("/login");}else{
+    res.render('ProductUnder999List', {products:products});
+    }
+    // res.sendFile(__dirname+"/ProductUnder999List.html");
+})
+
+app.post("/ProductUnder999List",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
         for(var i=0;i<products.length;i++){
             if(products[i].id===p_id){
                 img = products[i].img;
                 product_price = products[i].real_price;
+                product_name = products[i].product_name;
             }
         }
         console.log(newID);
@@ -185,12 +363,13 @@ app.post("/ProductUnder999List",function(req,res){
         const product = new Booking({
             uid:String(newID),
             pid:p_id,
-            productName:req.body.product_name,
+            productName:product_name,
             price:product_price,
             img_url:img
         });
 
-        product.save();
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
         res.redirect("/ProductUnder999List");
     }catch(error){
         console.log(error);
@@ -199,19 +378,115 @@ app.post("/ProductUnder999List",function(req,res){
 
 // Pouch.html
 app.get("/Pouch",function(req,res){
-    res.sendFile(__dirname+"/Pouch.html");
+    if(newID===undefined){res.redirect("/login");}else{
+    res.render('Pouch', {pouchs:pouch});
+    }
+})
+
+app.post("/Pouch",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<pouch.length;i++){
+            if(pouch[i].id===p_id){
+                img = pouch[i].img;
+                product_price = pouch[i].real_price;
+                product_name = pouch[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/Pouch");
+    }catch(error){
+        console.log(error);
+    }
 })
 
 // Charger.html
 app.get("/Charger",function(req,res){
-    res.sendFile(__dirname+"/Charger.html");
+    if(newID===undefined){res.redirect("/login");}else{
+    res.render('Charger', {chargers:charger});
+    }
+})
+
+app.post("/Charger",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<charger.length;i++){
+            if(charger[i].id===p_id){
+                img = charger[i].img;
+                product_price = charger[i].real_price;
+                product_name = charger[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/Charger");
+    }catch(error){
+        console.log(error);
+    }
+
 })
 
 // smartWatch.html
 app.get("/smartWatch",function(req,res){
-    res.sendFile(__dirname+"/smartWatch.html");
+    if(newID===undefined){res.redirect("/login");}else{
+        res.render('smartWatch', {smartwatchs:smartwatch});
+    // res.sendFile(__dirname+"/smartWatch.html");
+    }
 });
 
+app.post("/smartWatch",async function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        var product_name = "";
+        for(var i=0;i<smartwatch.length;i++){
+            if(smartwatch[i].id===p_id){
+                img = smartwatch[i].img;
+                product_price = smartwatch[i].real_price;
+                product_name = smartwatch[i].product_name;
+            }
+        }
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:product_name,
+            price:product_price
+        });
+
+        await product.save();
+        await mail(product_name,p_id,product_price,newID);
+        res.redirect("/smartWatch");
+    }catch(error){
+        console.log(error);
+    }
+});
 
 
 app.listen(process.env.PORT || 3001,function(){
