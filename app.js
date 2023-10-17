@@ -8,13 +8,15 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import products from "./helper/productunder99.js";
+import headphones from "./helper/headphones.js";
 
 const app  = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-console.log(products);
+// console.log(products);
+console.log(headphones);
 
 mongoose.connect("mongodb+srv://akash:akash@cluster0.trdd6ez.mongodb.net/mobileDB");
 // mongodb+srv://akash:akash@cluster0.trdd6ez.mongodb.net/trickDB
@@ -54,18 +56,20 @@ app.get("/", function(req, res) {
 // });
 // console.log(data1);
 
+var newID ;
+
 // SignIn
-app.get("/signIn.html",function(req,res){
-    res.sendFile(__dirname+"/login.html");
+app.get("/signIn",function(req,res){
+    res.sendFile(__dirname+"/signIn.html");
 });
 
-app.post("/signIn.html", function(req, res){
-  const newId = uuidv4();
+app.post("/signIn", function(req, res){
+  newID = uuidv4();
   const user = new Registers({
     name: req.body.username,
     email:req.body.email,
     password: req.body.password,
-    uid:String(newId)
+    uid:String(newID)
   });
   user.save();
   res.redirect("/");
@@ -77,7 +81,10 @@ app.get("/login",function(req,res){
 })
 
 app.post("/login",function(req,res){
-    const user = Registers.findOne({email:req.body.email,password:req.body.password});
+    const user = Registers.findOne({email:req.body.email});
+    newID = user.uid;
+    console.log(user.name);
+    console.log(newID);
     if(user){
         res.redirect("/");
     }else{
@@ -88,36 +95,73 @@ app.post("/login",function(req,res){
 // handles my_orders
 app.get("/my_orders",function(req,res){
   // here the main dynamic page come
-
 })
 
 
 // Contact Us
 app.get("/contact",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
     res.sendFile(__dirname+"/contact_us.html");
 })
 
 // USB.html
 app.get("/USB",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
     res.sendFile(__dirname+"/USB.html");
 })
 
 // Headphones.html
 app.get("/Headphones",function(req,res){
-    res.sendFile(__dirname+"/Headphones.html");
+    if(newID===undefined){res.redirect("/login");}
+    res.render('Headphones', {headphones:headphones});
+    // res.sendFile(__dirname+"/Headphones.html");
 })
+
+app.post("/Headphones",function(req,res){
+    try{
+        const p_id = req.body.product_id;
+        var img = "";
+        var product_price = "";
+        for(var i=0;i<headphones.length;i++){
+            if(headphones[i].id===p_id){
+                img = headphones[i].img;
+                product_price = headphones[i].real_price;
+            }
+        }
+        console.log(newID);
+        console.log(p_id);
+        console.log(img);
+        console.log(product_price);
+
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:req.body.product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        product.save();
+        res.redirect("/Headphones");
+    }catch(err){
+        console.log(err);
+    }
+});
 // WiredHeadphones.html
 app.get("/WiredHeadphones",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
     res.sendFile(__dirname+"/WiredHeadphones.html");
 })
 
 // PowerBankList.html
 app.get("/PowerBankList",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
     res.sendFile(__dirname+"/PowerBankList.html");
 })
 
 // ProductUnder999List.html
 app.get("/ProductUnder999List",function(req,res){
+    if(newID===undefined){res.redirect("/login");}
     res.render('ProductUnder999List', {products:products});
     // res.sendFile(__dirname+"/ProductUnder999List.html");
 })
@@ -126,18 +170,28 @@ app.post("/ProductUnder999List",function(req,res){
     try{
         const p_id = req.body.product_id;
         var img = "";
+        var product_price = "";
         for(var i=0;i<products.length;i++){
             if(products[i].id===p_id){
                 img = products[i].img;
+                product_price = products[i].real_price;
             }
         }
-        const product_price = req.body.product_price;
-
+        console.log(newID);
         console.log(p_id);
         console.log(img);
         console.log(product_price);
 
-        res.redirect("/");
+        const product = new Booking({
+            uid:String(newID),
+            pid:p_id,
+            productName:req.body.product_name,
+            price:product_price,
+            img_url:img
+        });
+
+        product.save();
+        res.redirect("/ProductUnder999List");
     }catch(error){
         console.log(error);
     }

@@ -1,89 +1,184 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link href="css/login.css" rel="stylesheet">
-  <script src="js/signlogin.js"></script>
-  </head>
 
+<head>
+  <meta charset="utf-8">
+  <title>AVA Smart Store</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <link rel="apple-touch-icon" sizes="180x180"
+      href="Fevicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32"
+      href="/Fevicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16"
+      href="/Fevicon/favicon-16x16.png">
+  <link rel="manifest"
+      href="/Fevicon/site.webmanifest">
+  <link rel="mask-icon"
+      href="/Fevicon/safari-pinned-tab.svg"
+      color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="img/favicon.ico" rel="icon">
+
+    <link rel="stylesheet" href="fonts/icomoon/style123.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min123.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min123.css">
+
+    <link rel="stylesheet" href="css/style123.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    
+</head> 
 <body>
-<div id="form">
+<header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+
   <div class="container">
-    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
-      <div id="userform">
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-          <li class="active"><a href="#signup"  role="tab" data-toggle="tab">Sign up</a></li>
-          <li><a href="#login"  role="tab" data-toggle="tab">Log in</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade active in" id="signup">
-            <h2 class="text-uppercase text-center"> Sign Up </h2>
-            <form id="signup">
-              <div class="row">
-                <div class="col-xs-12 col-sm-6">
-                  <div class="form-group">
-                    <label>First Name<span class="req">*</span> </label>
-                    <input type="text" class="form-control" id="first_name" required data-validation-required-message="Please enter your name." autocomplete="off">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                  <div class="form-group">
-                    <label> Last Name<span class="req">*</span> </label>
-                    <input type="text" class="form-control" id="last_name" required data-validation-required-message="Please enter your name." autocomplete="off">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label> Your Email<span class="req">*</span> </label>
-                <input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="form-group">
-                <label> Your Phone<span class="req">*</span> </label>
-                <input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="form-group">
-                <label> Password<span class="req">*</span> </label>
-                <input type="password" class="form-control" id="password" required data-validation-required-message="Please enter your password" autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="mrgn-30-top">
-                <button type="submit" class="btn btn-larger btn-block"/>
-                Sign up
-                </button>
-              </div>
-            </form>
+      <div class="row align-items-center position-relative">
+
+          <div class="site-logo">
+              <img src="Login Files/Logo.jpg" alt="" height="80px" >
+              <a href="index.html" class="text-black"><span class="text-primary">AVA Smart Stores</a>
           </div>
-          <div class="tab-pane fade in" id="login">
-            <h2 class="text-uppercase text-center"> Log in</h2>
-            <form id="login">
-              <div class="form-group">
-                <label> Your Email<span class="req">*</span> </label>
-                <input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="form-group">
-                <label> Password<span class="req">*</span> </label>
-                <input type="password" class="form-control" id="password" required data-validation-required-message="Please enter your password" autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="mrgn-30-top">
-                <button type="submit" class="btn btn-larger btn-block"/>
-                Log in
-                </button>
-              </div>
-            </form>
+
+          <div class="col-12">
+              <nav class="site-navigation text-right ml-auto " role="navigation">
+
+                  <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
+                      <li><a href="index.html" class="nav-link">Home</a></li>
+                      <li><a href="my_orders.html"  class="nav-link">My Orders</a></li>
+                      <li class="has-children">
+                          <a href="#about-section" class="nav-link">About Us <i
+                                  class="fa fa-angle-down mt-1"></i></a>
+                          <ul class="dropdown arrow-top">
+                              <li><a href="#team-section" class="nav-link">Team</a></li>
+                              <li><a href="#faq-section" class="nav-link">FAQ</a></li>
+                              <li><a href="contact_us.html" class="nav-link" >Contact Us</a></li>
+                      </li>
+                  </ul>
+                  </li>
+
+                  <li><a href="login.html"  nav-link>Login/Sign Up</a></li>
+                  </ul>
+              </nav>
+
           </div>
-        </div>
       </div>
-    </div>
   </div>
-  <!-- /.container --> 
-</div>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</body>
+</header>
+
+
+  
+ <div class="vin ">
+  <br>
+   <br>
+    <div class="wrapper">
+        <div class="title">
+           Login Form
+        </div>
+        <form action="/login" method="POST">
+           <div class="field">
+              <input type="text" name="email" required>
+              <label>Email Address</label>
+           </div>
+           <div class="field">
+              <input type="password" name="password" required>
+              <label>Password</label>
+           </div>
+           <div class="content">
+              <div class="pass-link">
+                 <a href="#">Forgot password?</a>
+              </div>
+           </div>
+           <div class="field">
+              <input type="submit" value="Login">
+           </div>
+           <div class="signup-link">
+              Not a member? <a href="/signIn">Signup now</a>
+           </div>
+        </form>
+     </div>
+    </br>
+  </br>
+    </div>
+  
+   
+  
+  <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+      <div class="row px-xl-5 pt-5">
+          <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+              <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+              <p class="mb-4">Our website will provide you quality product in resonable prices.</p>
+              <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>TCET, Kandivali (East)</p>
+              <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>contact.mobilewebsite@gmail.com</p>
+              <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+91 90298 99791 / +91 77108 55574</p>
+          </div>
+          <div class="col-lg-8 col-md-12">
+              <div class="row">
+                  <div class="col-md-4 mb-5">
+                      <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                      <div class="d-flex flex-column justify-content-start">
+                          <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                          <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                          <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                      </div>
+                  </div>
+                  <div class="col-md-4 mb-5">
+                      <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
+                      <div class="d-flex flex-column justify-content-start">
+                          <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                          <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                          <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                      </div>
+                  </div>
+                  <div class="col-md-4 mb-5">
+                      <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                      <p>Subscribe to our website so that you never miss a new product!</p>
+                      <form action="">
+                          <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Your Email Address">
+                              <div class="input-group-append">
+                                  <button class="btn btn-primary">Sign Up</button>
+                              </div>
+                          </div>
+                      </form>  
+                      <h6 class="text-secondary text-uppercase mt-4 mb-3">Vinit Pathak</h6>
+                          <a class="btn btn-primary btn-square mr-2" href="https://www.linkedin.com/in/vinit-pathak-7670b1225" ><i class="fab fa-linkedin-in"></i></a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <script src="mail/jqBootstrapValidation.min.js"></script>
+  <script src="mail/contact.js"></script>
+
+  <script src="js/main.js"></script>
+  </body>
+  </html>
